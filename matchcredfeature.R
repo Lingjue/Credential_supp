@@ -1,6 +1,4 @@
 
-
-
 matchcredfeature = function(dt1T1, dt1T2, ppm = 15, drt = 1) {
   
 match_combined=data.table()
@@ -51,9 +49,7 @@ for (tmp.quipu1 in unique(dt1T1[,quipu])){
     basemz2 = dt1T2[idx2,mz]
     idx2 <- which(dt1T2[,"quipu"]==tmp.quipu2)  #extract all quipu in set 2
     merged = cbind.fill(dt1T1[idx1,],dt1T2[idx2,])
-    ratio = dt1T1[idx1[1],ratio]/dt1T2[idx2[1],ratio]
     basert2 = mean(dt1T2[idx2,rt])
-    fratio = c(fratio,ratio)
     quipu_m1 = c(quipu_m1,tmp.quipu1)
     quipu_m2 = c(quipu_m2,tmp.quipu2)
     basemz_m1 = c(basemz_m1,basemz1)
@@ -66,15 +62,14 @@ for (tmp.quipu1 in unique(dt1T1[,quipu])){
 }
 
 
-
-quipu_match = data.table(cbind(quipu_m1,rtmean_m1,basemz_m1,quipu_m2,rtmean_m2,basemz_m2,fratio))
+quipu_match = data.table(cbind(quipu_m1,rtmean_m1,basemz_m1,quipu_m2,rtmean_m2,basemz_m2))
 nomatch2_combined = dt1T2[!match_idx2]
 nomatch1 = length(unique(dt1T1[,quipu]))-length(quipu_match[,quipu_m1])
 nomatch2 = length(unique(dt1T2[,quipu]))-length(quipu_match[,quipu_m2])
 
-cat(length(quipu_match[,quipu_m1]), "matches are found.\n")
-cat(nomatch1, "unmatched quipu#1 and",nomatch2,"unmatched quipu#2 are found.\n")
-cat(length(quipu_dm1),"quipu#1 and",length(quipu_dm2),"quipu#2 are duplicated match.\n")
+cat(length(quipu_match[,quipu_m1]), "Common feature groups are finally credentialed.\n")
+cat(nomatch1, "unmatched features in group #1 and",nomatch2,"unmatched features in group #2.\n")
+cat(length(quipu_dm1),"features in group #1 and",length(quipu_dm2),"features in group #2 has duplicated matches.\n")
 
-list(quipu_match,match_combined,nomatch1_combined,nomatch2_combined)
+list(Credentialed_FeatureGroups=quipu_match,Credentialed_Features=match_combined,NomatchFeatures_Group1=nomatch1_combined,NomatchFeatures_Group2=nomatch2_combined)
 }
