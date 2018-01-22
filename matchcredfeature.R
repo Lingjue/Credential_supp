@@ -1,5 +1,7 @@
 
-matchcredfeature = function(dt1T1, dt1T2, ppm = 15, rt = 1) {
+
+
+matchcredfeature = function(dt1T1, dt1T2, ppm = 15, drt = 1) {
   
 match_combined=data.table()
 nomatch1_combined=data.table()
@@ -61,4 +63,18 @@ for (tmp.quipu1 in unique(dt1T1[,quipu])){
     match_combined = rbind(match_combined,merged)
     match_idx2 = c(match_idx2,idx2)
    }
+}
+
+
+
+quipu_match = data.table(cbind(quipu_m1,rtmean_m1,basemz_m1,quipu_m2,rtmean_m2,basemz_m2,fratio))
+nomatch2_combined = dt1T2[!match_idx2]
+nomatch1 = length(unique(dt1T1[,quipu]))-length(quipu_match[,quipu_m1])
+nomatch2 = length(unique(dt1T2[,quipu]))-length(quipu_match[,quipu_m2])
+
+cat(length(quipu_match[,quipu_m1]), "matches are found.\n")
+cat(nomatch1, "unmatched quipu#1 and",nomatch2,"unmatched quipu#2 are found.\n")
+cat(length(quipu_dm1),"quipu#1 and",length(quipu_dm2),"quipu#2 are duplicated match.\n")
+
+list(quipu_match,match_combined,nomatch1_combined,nomatch2_combined)
 }
