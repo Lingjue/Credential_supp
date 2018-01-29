@@ -34,7 +34,7 @@ library(credential)
   xs_1 = fillPeaks(xs_1)
 
   # 1T2
-  xs_2 = xcmsSet("./1T1", method="centWave", ppm=15, peakwidth=c(10,30), snthresh=6, prefilter=c(3,100), mzdiff=0.01, integrate=1)
+  xs_2 = xcmsSet("./1T2", method="centWave", ppm=15, peakwidth=c(10,30), snthresh=6, prefilter=c(3,100), mzdiff=0.01, integrate=1)
   xs_2 = group(xs_2, bw=5, mzwid=.015, minfrac=0.5)
   xs_2 = retcor(xs_2, method="obiwarp",profStep=1)
   xs_2 = group(xs_2, bw=5, mzwid=.015, minfrac=0.5)
@@ -68,7 +68,7 @@ library(credential)
   colnames(ft_1) <- c("cc","mz", "rt", "i")
   
   ft_2 = dt_2[,c("mzmed","rtmed","intm")]
-  ft_2[,"cc":=seq.int(ft_1[ ,.N])]
+  ft_2[,"cc":=seq.int(ft_2[ ,.N])]
   ft_2 = ft_2[,c("cc","mzmed","rtmed","intm")]
   colnames(ft_2) <- c("cc","mz", "rt", "i")
   
